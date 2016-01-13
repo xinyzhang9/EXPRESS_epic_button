@@ -1,0 +1,67 @@
+<html>
+<head>
+<title>epic button game</title>
+<style>
+    #res{
+        color: red;
+    }
+    #playground{
+        text-align: center;
+        margin: 0 auto;
+    }
+    #btn{
+        width: 200px;
+        height: 100px;
+        color: white;
+        background: blue;
+        border-radius: 20px;
+        font-size: 20px;
+        border: 1px white;
+    }
+    #reset{
+        color: white;
+        background: red;
+        padding: 10px;
+        border-radius: 10px;
+        font-size: 20px;
+        border: 1px white;
+    }
+</style>
+<!--     <link rel='stylesheet' href='/stylesheets/style.css' /> -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type ="text/javascript">
+        $(document).ready(function (){
+            // this triggers the connection event in our server!
+            var socket = io.connect();
+            // we'll write all the socket stuff after the above line!
+            $('#btn').click(function(){
+                socket.emit('button:clicked',{update:1});
+            })
+
+            socket.on('counter:update',function(data){
+                var str = data.counter;
+                $('#res').html(str);
+            })
+
+            $('#reset').click(function(){
+                socket.emit('reset:clicked',{action:'reset'});
+            })
+
+
+        })
+    </script>
+</head>
+<body>
+    <div id = 'errors'></div>
+    <div id = 'playground'>
+        <h1>The button has been pushed <span id = 'res'></span> time((s)</h1>
+        <button id = 'reset'>reset</button>
+        <h4>Push the button to update the count</h4>
+        <button id = 'btn'>Push the epic button</button>
+
+        
+    </div>
+
+</body>
+</html><br>
